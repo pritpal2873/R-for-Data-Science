@@ -1,0 +1,120 @@
+---
+title: "Aesthetic Mapping"
+author: "Pritpal Singh"
+date: "2023-09-02"
+---
+
+**The simple graph has brought more information to the data analyst's mind than any other device.** ... John Tukey
+
+R has several systems for making graphs, but ggplot2 is one of the most elegant and most versatile. ggplot2 implements the grammar of graphics, a coherent system for describing and building graphs. With ggplot2, we can do more faster by learning one system and applying it in many places.
+
+ggplot2 one of the core members of the tidyverse, To access the data sets, help pages, and functions that we will use in this introductory part of ggplot2, load the tidyverse by running this code:
+
+```{r}
+if (!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
+```
+
+This one line of code loads the core tidyverse, packages that you will use in almost every data analysis. 
+
+
+## First Steps 
+
+
+Lets use out first graph to answer a question: do car with big engines use more fuel than cars with small engines? You probably already have an answer, but try to make answer more precise.
+
+What does the relationship between engine size and fuel efficiency look like?Is it positive? Negative? Linear? Nonlinear?
+
+####The mpg Data Frame 
+A data frame is a rectangular collection of variables (in the columns) and observations (in the rows). mpg contains observations collected by US Environment Protection Agency on 38 models of cars:
+
+
+```{r}
+library(datasets)
+?mpg  # to know more about the data
+head(mpg)  # to look the starting rows of the data
+```
+
+
+## Creating a ggplot
+
+To plot mpg, run this code to put displ on the x-axis and hwy on the y-axis:
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+
+The plot shows the negative relationship between engine size (displ) and fuel efficiency (hwy). In other words, cars with big engines uses more fuel. 
+
+
+### A Graphing Template
+
+
+Let's turn the above code into a reusable template for making graphs with ggplot2. To make a graph the bracketed sections in the following code with a data set, geom function or a collection of mappings:
+
+```{r}
+#ggplot(data = <DATA>) +
+# <GEOM_FUCTION>(mapping = aes(<MAPPING>))
+```
+
+#####Exercise 
+1. Run ggplot(data = mpg), What do you see?
+2. How many rows are in mtcars? How many columns?
+3. What does the drv variable describe? Read the help for ?mpg to find out.
+4. Make a scatterplot of hwy versus cyl.
+5. What happens if you make a scatterplot of class versus drv? Why is the plot not useful?
+
+
+Try to answer these question on your own.
+
+
+
+
+
+
+
+
+
+
+#### Answer
+
+**1.**
+```{r}
+#Run ggplot(data = mpg), What do you see?
+ggplot(data = mpg)   # this will show nothing on the graph with out passing the mapping arguments. 
+```
+
+**2.**
+```{r}
+#How many rows are in mtcars? How many columns?
+df <- mtcars
+print(df)
+nrow(df) # to know the number of rows in the dataframe use nrow(data)
+ncol(df) # to know the number of columns in the dataframe use ncol(data)
+length(df) # we can also use length(data) function to know the number of columns in the dataframe
+dim(df) # dim(data) function can be used to know the number of rows and columns of the dataframe
+```
+
+**3.**
+```{r}
+#What does the drv variable describe? Read the help for ?mpg to find out.
+?mpg
+# by using the above line of code we can get information about the mpg data. 
+# Here drv mean : the type of the drive train, where f = front-wheel drive, r = rear wheel drive, 4 = 4wd
+```
+
+**4.**
+```{r}
+#Make a scatterplot of hwy versus cyl
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = cyl, y = hwy))
+```
+
+**5.**
+```{r}
+# What happens if you make a scatterplot of class versus drv? Why is the plot not useful?
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = class, y = drv))
+```
+From the above graph we could not conclude any specific information, because the both drv and class are discrete variables. 
