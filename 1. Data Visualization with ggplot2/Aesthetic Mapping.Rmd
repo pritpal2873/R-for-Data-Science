@@ -5,13 +5,168 @@ date: "2023-09-02"
 output: html_document
 ---
 
+**The greatest value of a picture is when it forces us to notice what we never expected to see ___ John Tukey**
+
+An **aesthetic** is the visual property of the objects in our plot. Aesthetic includes things like the size, shape or the color of our points. We can display a point in different ways by changing the values of its aesthetic properties. We can map the colors of our points to the class variable to reveal the class of each car: 
+
 ```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, color = class))
+```
+aes().ggplot2 will automatically assign a unique level of the aesthetic to each unique value of the variable, a process known as scaling.ggplot2 will also add a legend that explains which levels correspond to which values. 
+
+In the preceding example we assign class to color aesthetic, but we could have mapped class to the size aesthetic in the same way. In this case, the exact size of each point would reveal its class affiliation. We get a warning here, because mapping an unordered variable (class) to an ordered aesthetic  (size) is not a good idea. 
+
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, size = class))
+
+```
+or we could have mapped class to the alpha aesthetic, which controls the transparency of the points or the shape of the points;
+
+```{r}
+#Top
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, alpha = class))
 ```
 
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, shape = class))
+```
+What happened to SUVs? ggplot will only use six shapes at a time. By default, additional groups will go unplotted when you use this aesthetic.
 
+We can also set the aesthetic properties of our geom manually. For example, we can make all of the points in out plot blue:
 
 ```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+```
+We will need to pick a value that makes sense for that aesthetic.
+* The name of a color as a character string
+* The size of a point in mm
+* The shape of a point as a number. There are some seeming duplicates for example 0, 15 and 22 are all squares. The difference comes from the interaction of the color and fill aesthetics. The hollow shapes (0-14) have a border determined by color; the solid shapes (15 - 18) are filled with color; and the filled shapes (21 - 24) have a border of color and are filled with fill. 
 
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), shape = 21, fill = 'red')
+```
+#### Excersice
+
+1. What gone wrong with this code? why are the points not blue?
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+```
+2. Which variables in mpg are categorical? Which variables are continuous? (Hint: type? mpg to read the documentation for the dataset.) How can you see this information when you run mpg?
+3. Map a continuous variable to color, size and shape. How do these aesthetic behave differently for categorical versus continuous variables?
+4. What happens if you map the same variable to multiple aesthetics?
+5. What does the stroke aesthetic do? What shapes does it work with? (Hint: use ?geom_point.)
+6. What happens if you map an aesthetic to something other than a variable name, like aes (color = displ < 5)?
+
+
+
+
+
+
+Please try to complete the exercise on your own!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Answer
+**1**
+```{r}
+# 1. What gone wrong with this code? why are the points not blue?
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+```
+Because color was considered as the part of the dataframe and ggplot2 also created legend for the same.
+
+
+**2**
+```{r}
+# 2. Which variables in mpg are categorical? Which variables are continuous? (Hint: type? mpg to read the documentation for the dataset.) How can you see this information when you run mpg?
+?mpg
+class(mpg$manufacturer)  #using class function we can know the type of the columns weather its categorical (character) or continuous (numeric)
+class(mpg$model)
+class(mpg$displ)
+class(mpg$year)
+class(mpg$cyl)
+class(mpg$trans)
+class(mpg$drv)
+class(mpg$cty)
+class(mpg$hwy)
+class(mpg$fl)
+class(mpg$class)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+**3**
+```{r}
+# 3. Map a continuous variable to color, size and shape. How do these aesthetic behave differently for categorical versus continuous variables?
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = hwy))
+```
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, size = hwy))
+```
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, shape = hwy))
+```
+From above code we can conclude that the color and size can accept the continuous variables (columns) but shape requires only categorical value
+
+
+**4**
+```{r}
+# 4. What happens if you map the same variable to multiple aesthetics?
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = hwy, size = hwy))
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, size = displ, color = displ))
+```
+
+**5**
+```{r}
+# 5. What does the stroke aesthetic do? What shapes does it work with? (Hint: use ?geom_point.)
+?geom_point
+# For shapes that have a border (like 21), you can color the inside and outside separately. we can use the stroke aesthetic to modify the width of the border
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy),shape = 21, fill = "blue", size = 3, stroke = 3)
+```
+
+**6**
+```{r}
+# 6.What happens if you map an aesthetic to something other than a variable name, like aes (color = displ < 5)?
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = displ > 5 & hwy > 20))
+```
+
+Using an expression assigning to any aesthetic we can improve the visualization of data on charts and make a specific statement about the finding from the datasets
