@@ -2,6 +2,7 @@
 title: "Aesthetic Mapping"
 author: "Pritpal Singh"
 date: "2023-09-02"
+note: "Run this file in R studio"
 ---
 
 **The simple graph has brought more information to the data analyst's mind than any other device.** ... John Tukey
