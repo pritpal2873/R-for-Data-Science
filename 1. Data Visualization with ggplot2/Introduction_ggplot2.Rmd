@@ -1,5 +1,5 @@
 ---
-title: "Aesthetic Mapping"
+title: "Introduction ggplot2"
 author: "Pritpal Singh"
 date: "2023-09-02"
 note: "Run this file in R studio"

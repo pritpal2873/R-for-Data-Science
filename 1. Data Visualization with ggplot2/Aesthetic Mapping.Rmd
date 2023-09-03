@@ -3,6 +3,7 @@ title: "Aesthetic Mapping"
 author: "Pritpal Singh"
 date: "2023-09-02"
 output: html_document
+Note: "Run this file in RStudio"
 ---
 
 **The greatest value of a picture is when it forces us to notice what we never expected to see ___ John Tukey**
@@ -13,6 +14,7 @@ An **aesthetic** is the visual property of the objects in our plot. Aesthetic in
 ggplot(data = mpg) +
   geom_point(mapping = aes(x = displ, y = hwy, color = class))
 ```
+
 aes().ggplot2 will automatically assign a unique level of the aesthetic to each unique value of the variable, a process known as scaling.ggplot2 will also add a legend that explains which levels correspond to which values. 
 
 In the preceding example we assign class to color aesthetic, but we could have mapped class to the size aesthetic in the same way. In this case, the exact size of each point would reveal its class affiliation. We get a warning here, because mapping an unordered variable (class) to an ordered aesthetic  (size) is not a good idea. 
@@ -160,6 +162,8 @@ ggplot(data = mpg) +
 # For shapes that have a border (like 21), you can color the inside and outside separately. we can use the stroke aesthetic to modify the width of the border
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy),shape = 21, fill = "blue", size = 3, stroke = 3)
+
+# to use the stroke aesthetic please choose the shape first and fill and size
 ```
 
 **6**
