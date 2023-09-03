@@ -2,7 +2,7 @@
 title: "Introduction ggplot2"
 author: "Pritpal Singh"
 date: "2023-09-02"
-note: "Run this file in R studio"
+note: Run this file in R studio
 ---
 
 **The simple graph has brought more information to the data analyst's mind than any other device.** ... John Tukey
@@ -12,6 +12,8 @@ R has several systems for making graphs, but ggplot2 is one of the most elegant 
 ggplot2 one of the core members of the tidyverse, To access the data sets, help pages, and functions that we will use in this introductory part of ggplot2, load the tidyverse by running this code:
 
 ```{r}
+options(warn=0)
+
 if (!require("tidyverse")) install.packages("tidyverse")
 library(tidyverse)
 ```
@@ -40,6 +42,9 @@ head(mpg)  # to look the starting rows of the data
 ## Creating a ggplot
 
 To plot mpg, run this code to put displ on the x-axis and hwy on the y-axis:
+```{r}
+library(ggplot2)
+```
 
 ```{r}
 ggplot(data = mpg) + 
