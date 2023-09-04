@@ -84,9 +84,9 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
 We can also use the same idea to specify different data for each layer. Here, our smooth line displays just a subset of the `mpg` dataset, the subcompact cars. The local data argument in `geom_object()` overrides the global data argument in `ggplot()` for that layer only.
 
 ```{r}
-#ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
- # geom_point(mapping = aes(color = class)) +
-  #geom_smooth(data = filter(mpg, class == 'subcompact'), se = FALSE)
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
+ geom_point(mapping = aes(color = class)) +
+  geom_smooth(data = filter(mpg, class == 'subcompact'), se = FALSE)
 ```
 
 ## Exercise
