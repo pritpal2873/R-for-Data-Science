@@ -1,0 +1,160 @@
+---
+title: "Common Problem"
+author: "Pritpal Singh"
+date: "2023-09-03"
+---
+
+As you start to run R code, we are likely to run into problems. Do not worry -- it happens to everyone. R is extremely picky and a misplaced character can make all the difference. Sometimes we will run the code and nothing will happen. Check the left-hand of your console: if it's a +, it means that R does not thick you have typed a complete expression and it's waiting for us to finish it. In this case, it's usually easy to start from the scratch again by pressing Esc to abort processing the current command.
+
+One common problem when creating **ggplot2** graphics is to put the + in the wrong place: it has to come at the end of the line not the start. In other words make sure we have not accidentally written code like this
+
+```{r}
+library(ggplot2)
+# ggplot(data = mpg)
+# + geom_point(mapping = aes(x = displ, y = hwy))
+
+# uncomment the above to lines to see the difference
+```
+
+If you are stuck, try help. We can get help about any R function by running **?function_name** in the console, or selecting the function name and pressing F1 in RStudio. Don't worry if the help doesn't seem that helpful -- instead skip down to examples and look for code that matches what you are looking for.
+
+###Facets One way to add additional variables is with aesthetic. Another way, particularly useful for categorical variables, is to split our plot into *facets*, subplots that each display one subset of the data.
+
+To facet our plot by a single variable, use **facet_wrap()**. The first argument of **facet_wrap()** should be a formula, which we create with \~ followed by a variable name (here "formula" is the name of a data structure in R, not a synonym for "equation"). The variable that we pass to **facet_wrap()** should be discrete.
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+```
+
+To facet our plot on the combination of two variables, add **facet_grid()** to our plot call. The first argument of **facet_grid()** is also a formula. This time the formula should contain two variables names separated by a \~.
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ cyl)
+
+```
+
+If we prefer to not facet in the rows or columns dimension, use a . instead of a variable name, e.g. **+ facet_grid(.\~ cyl)**.
+
+## Exercises
+
+1.  What happens if you facet on a continuous variable?
+
+2.  what do the empty cells in a plot with `facet_grid(drv ~ cyl)` mean? How do they relate to this plot?
+
+    `ggplot (data = mpg) +`
+
+    `geom_point(mapping = aes(x = drv, y = cyl))`
+
+3.  what plots does the following code make? what does `.` do?
+
+    `ggplot(data = mpg) +`
+
+    `geom_point(mapping = aes(x = displ, y = hwy)) +`
+
+    `facet_grid(drv ~ .)`
+
+    `ggplot(data = mpg) +`
+
+    `geom_point(mapping = aes(x = displ, y = hwy)) +`
+
+    `facet_grid(. ~ cyl)`
+
+4.  Take the first faceted plot in this section:
+
+    `ggplot(data = mpg) +`
+
+    `geom_point(mapping = aes(x = displ, y = hwy)) + facet_grid(~ class, nrow = 2)`
+
+    What are the advantages to using faceting instead of the color aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?
+
+5.  Read `facet_wrap()`. What does `nrow` do? What does `ncol` do? What other options control the layout of the individual panels? Why doesn't `facet_grid()` have `nrow` and `ncol` variables?
+
+6.  When using `facet_grid()` you should usually put the variable with more unique levels in the columns. Why?
+
+    ## Answer
+
+    **1**
+
+    ```{r}
+    # What happens if you facet on a continuous variable?
+    ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = displ, y = hwy)) + 
+      facet_grid(~ year)
+
+    ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = displ, y = hwy)) + 
+      facet_grid(~ cty)
+    ```
+
+    When we facet on a continuous variable, facet may be try to convert the continuous variable to categorical or discrete variable and output the graph likewise. As we can conclude form above plots, the continuous variables are converted to categorical to plot the graph.
+
+    **2**
+
+    ```{r}
+    # what do the empty cells in a plot with facet_grid(drv ~ cyl) mean? How do they relate to this plot?
+    ggplot (data = mpg) +
+      geom_point(mapping = aes(x = drv, y = cyl)) +
+      facet_grid(drv ~ cyl)
+
+    ```
+
+The empty cells represents the missing values or there is observation for that combination of axises. Like bottom left cell means there is no such value which represents drv = r(rear) having 4 cylinders.
+
+**3**
+
+```{r}
+# what plots does the following code make? what does . do?
+
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ .)
+
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(. ~ cyl)
+```
+
+The symbol `.` ignores that dimensions when faceting. For example `drv ~ .` facet by values of `drv` on the y-axis. Same for `. ~ cyl` facet values of `cyl` on the x-axis.
+
+**4**
+
+```{r}
+#Take the first faceted plot in this section:
+
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+```
+
+What are the advantages to using faceting instead of the color aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = class))
+```
+
+Using the aesthetic color as class we can easily differentiate between the different classes. But same is the disadvantages, as the number of classes increases the overlapping of data points became the new issue and differentiation between different classes tends to be more difficult.
+
+**5**
+
+```{r}
+#Read facet_wrap(). What does nrow do? What does ncol do? What other options control the layout of the individual panels? Why doesn't facet_grid() have nrow and ncol variables?
+
+?facet_wrap()
+```
+
+`facet_wrap()` wraps a 1d sequence of panels into 2d. This is generally a better use of screen space than `facet_grid()` because most displays are roughly rectangular.
+
+`nrow` and `ncol` are the Number or rows and columns to use when laying out the facets. The `nrow` and `ncol` arguments are unnecessary for `facet_grid()` since the numbers of unique values of the variables specified in the function determines the number of rows and columns.
+
+**6**
+
+```{r}
+# When using facet_grid() you should usually put the variable with more unique levels in the columns. Why?
+```
+
+There will be more space for columns if the plot is laid out horizontally (landscape).
