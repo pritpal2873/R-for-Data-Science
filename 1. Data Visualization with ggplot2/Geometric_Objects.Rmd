@@ -4,6 +4,10 @@ author: "Pritpal Singh"
 date: "2023-09-04"
 ---
 
+```{r}
+library(ggplot2)
+```
+
 A `geom` is the geometrical object that a plot uses to represent data. People often describe plots by the type of geom that the plot uses. For example, bar charts use bar geom, line chart use line geom, boxplots use boxplot geom, and so on. Scatterplots break the trend; they use the point geom to plot the same data.
 
 To change the geom in our plot, change the geom function that we add to `ggplot()`. For instance, to make the preceding plots, we can use this code.
@@ -80,9 +84,9 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
 We can also use the same idea to specify different data for each layer. Here, our smooth line displays just a subset of the `mpg` dataset, the subcompact cars. The local data argument in `geom_object()` overrides the global data argument in `ggplot()` for that layer only.
 
 ```{r}
-ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
-  geom_point(mapping = aes(color = class)) +
-  geom_smooth(data = filter(mpg, class == 'subcompact'), se = FALSE)
+#ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
+ # geom_point(mapping = aes(color = class)) +
+  #geom_smooth(data = filter(mpg, class == 'subcompact'), se = FALSE)
 ```
 
 ## Exercise
