@@ -2,6 +2,7 @@
 title: "Statistical Tranformations"
 author: "Pritpal Singh"
 date: "2023-09-05"
+Note: "Runt this file in RStudio"
 ---
 
 ```{r}
