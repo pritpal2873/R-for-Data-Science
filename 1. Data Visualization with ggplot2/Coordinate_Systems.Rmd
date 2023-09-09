@@ -1,0 +1,162 @@
+---
+title: "Coordinate Systems"
+author: "Pritpal Singh"
+date: "2023-09-09"
+note: open this file in RStudio
+---
+
+```{r}
+library(ggplot2)
+```
+
+Coordinate Systems are probably the most complicated part of **ggplot2**. The default coordinate system is the Cartesian Coordinate system where the x and y position act independently to find the location of each point. There are number of other coordinate systems that are occasionally helpful.
+
+1.  `coord_flip()` switches the x- and y-axes. This is useful if we want horizontal boxplots. It's also useful for long labels -- it's hard to get them to fit without overlapping on the x-axis.
+
+    ```{r}
+    ggplot(data = mpg, mapping = aes(x = class, y = hwy)) + 
+      geom_boxplot()
+
+    ggplot(data = mpg, mapping = aes(x = class, y = hwy)) +
+      geom_boxplot() + 
+      coord_flip()
+    ```
+
+2.  `coord_quickmap()` sets the aspect ratio correctly for maps. This is very important if we are plotting spatial data with **ggplot2**.
+
+    ```{r}
+    nz <- map_data("nz")
+
+    ggplot(nz, aes(long, lat, group = group)) +
+     geom_polygon(fill = "white", color = "black")
+
+    ggplot(nz, aes(long, lat, group = group)) +
+     geom_polygon(fill = "white", color = "black") +
+     coord_quickmap()
+    ```
+
+3.  `coord_polar()` uses polar coordinates. Polar coordinates reveal an interesting connection between a bar chart and a Coxcomb chart.
+
+    ```{r}
+    bar <- ggplot(data = diamonds) + 
+      geom_bar(
+        mapping = aes(x = cut, fill = cut),
+        show.legend = FALSE,
+        width = 1
+      ) + 
+      theme(aspect.ratio = 1) + 
+      labs(x = NULL, y = NULL)
+
+    bar + coord_flip()
+    bar + coord_polar()
+    ```
+
+## Exercises
+
+1.  Turn a stacked bar chart into a pie chart using `coord_polar()`.
+
+2.  What does `labs()` do? Read the documentation.
+
+3.  What's the difference between `coord_quickmap()` and `coord_map()`?
+
+4.  What does the following plot tell you about the relationship between city and highway mpg? Why is `coord_fixed()` important? What does `geom_abline()` do?
+
+    ```{r}
+    ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+      geom_point() + 
+      geom_abline() + 
+      coord_fixed()
+    ```
+
+## Answer
+
+**1**
+
+> Turn a stacked bar chart into a pie chart using `coord_polar()`.
+
+A pie chart is a stacked bar chart with the addition of polar coordinated, For example:
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = factor(1), fill = drv)) +
+  geom_bar()
+```
+
+Now add `coord_polar(theta = 'y')` to create pie chart
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = factor(1), fill = drv)) +
+  geom_bar() + 
+  coord_polar(theta = 'y')
+```
+
+The argument `theta = 'y'` maps `y` to the angle of each section. If `coord_polar()` is specified without `theta = 'y'`, then the resulting plot is called a bulls-eye chart
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = factor(1), fill = drv)) +
+  geom_bar(width = 1) + 
+  coord_polar()
+```
+
+**2**
+
+> What does `labs()` do? Read the documentation.
+
+The `labs()` function adds axis titles, plot titles, and a caption to the plot.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) + 
+  geom_boxplot() + 
+  coord_flip() + 
+  labs(y = 'Highway MPG',
+       x = "Class",
+       title = "Highway MPG by car class",
+       subtitle = '199-2008',
+       caption = "Source: http://fueleconomy.gov"
+       )
+```
+
+The arguments to `labs()` are optional, so we can add as many or as few of these as are needed
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) + 
+  geom_boxplot() + 
+  coord_flip() + 
+  labs(y = 'Highway MPG',
+       x = "Class",
+       title = "Highway MPG by car class",
+       )
+```
+
+**3**
+
+> What's the difference between `coord_quickmap()` and `coord_map()`?
+
+```{r}
+?coord_map()
+```
+
+```{r}
+?coord_quickmap()
+```
+
+The `coord_map()` function uses map projections to project the 3D Earth onto a 2D plane. By default, `coord_map()` uses the Mercator projection. This projection is applied to all the geoms in the plot. The `coord_quickmap()` function uses an approximate but faster map projection. This approximation ignores the curvature of Earth and adjusts the map for the latitude/longitude ratio. The `coord_quickmap()` project is faster then `coord_map()` both because the projection is computationally easier, and unlike `coord_map()`, the coordinates of the individual geoms do not need to be transformed.
+
+**4**
+
+> What does the following plot tell you about the relationship between city and highway mpg? Why is `coord_fixed()` important? What does `geom_abline()` do?
+
+```{r}
+p <- ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+  geom_point() + 
+  geom_abline() 
+
+p +  coord_fixed()
+```
+
+If we did not include `coord_fixed()`, then the line would no longer have an angle of 45 degrees.
+
+```{r}
+p
+```
+
+On average, humans are best able to perceive difference in angles relative to 45 degrees. The Function \``ggthemes::bank_slopes()` will calculate the optimal aspect ratio to bank slopes to 45 degrees.
