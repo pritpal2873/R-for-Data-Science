@@ -4,3 +4,170 @@ author: "Pritpal Singh"
 date: "2023-09-09"
 note: run this file in RStudio
 ---
+
+## Coding Basics
+
+We can use R as calculator
+
+```{r}
+1 / 200 * 30
+```
+
+```{r}
+(59 + 73 + 2) / 3
+```
+
+```{r}
+sin(pi / 2)
+```
+
+We can create a new objects with `<-` :
+
+```{r}
+x <- 3 * 4
+x
+```
+
+All R statements where we create objects, *assignment* statements have the same form:
+
+`object_name <- value`
+
+When reading that code say "object name gets value" in your head
+
+You will make a lots of assignments and `<-` is a pain to type. Don't be lazy and use `=` ; it will work, but it will cause confusion later.
+
+## What's in a Name?
+
+Object name must start with a letter, and can only contain `letters`, `number`, `_`, and `.` . We want our object names to be descriptive, so we will need a convention for multiple words. I recommend *snake_case* where we separate lowercase words with `_`.
+
+`i_use_snake_case`
+
+We can inspect an object by typing its name
+
+```{r}
+x
+```
+
+Make another assignment
+
+```{r}
+this_is_a_really_long_name <- 2.5
+```
+
+To inspect this object try out R Studio's completion facility: type "this", press Tab, add characters until we have a unique prefix, then press Return
+
+```{r}
+this_is_a_really_long_name
+```
+
+Make yet another assignment
+
+```{r}
+r_rocks <- 2 ^ 3
+```
+
+Let's try to inspect it
+
+There's an implied contract between us and R; it will do the tedious computation for us, but in return , we must be completely precise in our instructions. **Typos** matter. **Case** matters.
+
+```{r}
+r_rocks
+```
+
+## Calling Functions
+
+R has a large collection of built-in functions that are called like this:
+
+`function_name(arg1 = val1, arg2 = val2, ……)`
+
+Let's try using `seq()`, which makes regular *seq*uences of numbers and, while we're at it., learn more helpful features of R Studio. Type `se` and hit Tab. A pop_up shows us possible completions. Specify `seq()` by typing more to disambiguate, or by using arrows to select. Notice the floating tooltip that pops up, reminding us of the function's arguments and purpose. If we want more help, press F1 to get all the details in the help tab in the lower-right pane.
+
+Press tab once more when we have selected the function we want. R Studio will add matching opening (`(`) and (`)`) parentheses for us. Type arguments `1, 10` and hit run.
+
+```{r}
+seq(1, 10)
+```
+
+Type this code and notice similar assistance help with the paired quotation marks
+
+```{r}
+x <- "hello world"
+x
+```
+
+If we make an assignment, we don;t get to see the value. We are then tempted to immediately double-click the result.
+
+```{r}
+y <- seq(1, 10, length.out = 5)
+y
+```
+
+This common action can be shortened by surrounding the assignment with parentheses, which cause assignment and "print to screen" happen
+
+```{r}
+(y <- seq(1, 10, length.out = 5))
+```
+
+Now look at our environment in the upper-right pane. Here we can see all of the objects that we have created.
+
+## Exercises
+
+1.  Why does this code not work?
+
+    `my_variable <- 10`
+
+    `my_vareable`
+
+    Look carefully!
+
+2.  Tweak each of the following R commands so that they run correctly
+
+    ```{r}
+    #library(tidyverse)
+
+    #ggplot(dota = mpg) +
+    # geom_point(mapping = aes(x = displ, y = hwy))
+
+    #fliter(mpg, cyl = 8)
+    #filter(diamond, carat > 3)
+    ```
+
+3.  Press Alt-Shift-K. What happens? How can you get to the same place using the menus?
+
+> ### TODO:
+>
+> Please Complete the above exercise on your own.
+
+## Answer
+
+**1**
+
+> Why does this code not work?
+
+```{r}
+my_variable <- 10
+my_variable     # check typos
+```
+
+**2**
+
+> Tweak each of the following R commands so that they run correctly
+
+```{r}
+library(tidyverse)
+
+ggplot(data = mpg) +
+ geom_point(mapping = aes(x = displ, y = hwy))
+
+filter(mpg, cyl == 8)
+
+filter(diamonds, carat > 3)
+
+  
+```
+
+**3**
+
+> Press Alt-Shift-K. What happens? How can you get to the same place using the menus?
+
+This gives a menu with keyboard shortcuts. This can be found in menu under `Tools -> Keyboard Shortcuts Help`
