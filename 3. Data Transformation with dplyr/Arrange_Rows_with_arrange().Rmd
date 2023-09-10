@@ -1,0 +1,107 @@
+---
+title: "Arrange Rows with arrange()"
+author: "Pritpal Singh"
+date: "2023-9-10"
+note: "open this file in RStudio"
+---
+
+`arrange()` works similarly to `filter()` except that instead of selecting rows, it changes their order. It takes a data frame and set of column names to order by. If we provide more than one column name, each additional column will be used to break ties in the values of preceding columns.
+
+```{r}
+library(tidyverse)
+library(nycflights13)
+```
+
+```{r}
+arrange(flights, year, month, day)
+```
+
+Use `desc()` to reorder by a column in descending order
+
+```{r}
+arrange(flights, desc(arr_delay))
+```
+
+Missing values are always sorted at end
+
+```{r}
+df <- tibble(x = c(5, 2, NA))
+arrange(df, x)
+```
+
+```{r}
+arrange(df, desc(x))
+```
+
+## Exercise
+
+1.  How could you use `arrange()` to sort all missing values to the start? (Hint: use `is.na()`)
+2.  Sort `flights` to find the most delayed flights. Find the flights that left earliest
+3.  Sort `flights` to find the fastest flights
+4.  Which flights traveled the longest? Which traveled the shortest?
+
+#### TODO:
+
+**Please complete the exercise on your own**
+
+**1**
+
+> How could you use `arrange()` to sort all missing values to the start? (Hint: use `is.na()`)
+
+```{r}
+arrange(flights, desc(dep_time))
+```
+
+```{r}
+arrange(flights, desc(is.na(dep_time)))
+```
+
+```{r}
+arrange(flights, desc(is.na(dep_time)), dep_time)
+```
+
+**2**
+
+> Sort flights to find the most delayed flights. Find the flights that left earliest.
+
+Find the most delayed flights by sorting the table by departure delay, `dep_delay`, in descending order.
+
+```{r}
+arrange(flights, desc(dep_delay))
+```
+
+The most delayed flight was HA 51, JFK to HNL, which was scheduled to leave on January 09, 2013 09:00. Note that the departure time is given as 641, which seems to be less than the scheduled departure time. But the departure was delayed 1,301 minutes, which is 21 hours, 41 minutes. The departure time is the day after the scheduled departure time. Be happy that you weren\'t on that flight, and if you happened to have been on that flight and are reading this, I\'m sorry for you.
+
+Similarly, the earliest departing flight can be found by sorting `dep_delay` in ascending order.
+
+```{r}
+arrange(flights, dep_delay)
+```
+
+**3**
+
+> Sort flights to find the fastest flights.
+
+```{r}
+head(arrange(flights, air_time))
+```
+
+```{r}
+head(arrange(flights, desc(distance / air_time)))
+```
+
+**4**
+
+> Which flights traveled the longest? Which traveled the shortest?
+
+```{r}
+arrange(flights, desc(distance))
+```
+
+```{r}
+arrange(flights, distance)
+```
+
+```{r}
+arrange(flights, desc(air_time))
+```
