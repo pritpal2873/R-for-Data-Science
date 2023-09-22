@@ -1,0 +1,67 @@
+---
+title: "Missing Values"
+author: "Pritpal Singh"
+date: "2023-9-19"
+note: "open this file in RStudio"
+---
+
+If we encountered unusual values in our dataset, and simply want to move to the rest of the analysis, we have two options.
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+-   Drop the entire row with the strange values
+
+    ```{r}
+    diamonds2 <- diamonds %>%
+      filter(between(y, 3, 20))
+
+    diamonds2
+    ```
+
+Well this option is not recommended!!!!
+
+-   Instead, replace the unusual values with missing values. The easiest way to do this is to use `mutate()` to replace the variables with a modified copy. We can us the `ifelse()` function to replace unusual values with NA
+
+    ```{r}
+    diamonds2 <- diamonds %>%
+      mutate(y = ifelse(y < 3| y > 20, NA, y))
+
+    diamonds2
+    ```
+
+`ifelse()` has three arguments. The first argument `test` should be a logical vector. The result will contain the value of the second argument, `yes`, when `test` is `TRUE`, and the value of the third argument, `no`, when it is `FALSE`.
+
+Like R, **ggplot2** subscribes to the philosophy that missing values should never silently go missing. It\'s not obvious where you should plot missing values, so **ggplot2** doesn\'t include them in the plot, but it does warn that they\'ve been removed.
+
+```{r}
+ggplot(data = diamonds2, mapping = aes(x = x, y = y)) +
+  geom_point()
+```
+
+To suppress that warning, set `na.rm = TRUE`
+
+```{r}
+ggplot(data = diamonds2, mapping = aes(x = x, y = y)) +
+  geom_point(na.rm = TRUE)
+```
+
+Other times we want to understand what makes observations with missing values different from observations with recorded values. For example, in `nycflights13 :: flights`, missing values in the `dep_time` variable indicate that the flight was cancelled. So we might want to compare the scheduled departure times for cancelled and noncancelled times. We can do this by making a new variable `is.na()`.
+
+```{r}
+nycflights13::flights %>%
+  mutate(
+    cancelled = is.na(dep_time),
+    sched_hour = sched_dep_time %/% 100,
+    sched_min = sched_dep_time %% 100,
+    sched_dep_time = sched_hour + sched_min / 60
+  ) %>%
+  ggplot(mapping = aes(sched_dep_time)) + 
+  geom_freqpoly(
+    mapping = aes(color = cancelled),
+    binwidth = 1/4
+  )
+```
+
+However, this plot is not great because there are many more non-cancelled flights than the cancelled flights.

@@ -5,7 +5,7 @@ date: "2023-9-13"
 note: "open this file in RStudio"
 ---
 
-Grouping is most useful in conjunction with summarize(), but wecan also do convenient operations with `mutate()` and `filter()`
+Grouping is most useful in conjunction with summarize(), but we can also do convenient operations with `mutate()` and `filter()`
 
 ```{r}
 library(tidyverse)
@@ -49,8 +49,7 @@ flights_sml
       select(year:day, dest, arr_delay, prop_delay)
     ```
 
-A grouped filter is a grouped mutate followed by an ungrouped filter. I generally avoid them except for quick-and-dirty manipulations: otherwise it\'s hard to check that you\'ve done the manipulation
-correctly. Functions that work most naturally in grouped mutates and filters are known as window functions (versus the summary functions used for summaries). You can learn more about useful window functions in the corresponding vignette: `vignette("window-functions")`.
+A grouped filter is a grouped mutate followed by an ungrouped filter. I generally avoid them except for quick-and-dirty manipulations: otherwise it's hard to check that you've done the manipulation correctly. Functions that work most naturally in grouped mutates and filters are known as window functions (versus the summary functions used for summaries). You can learn more about useful window functions in the corresponding vignette: `vignette("window-functions")`.
 
 ## Exercise
 
@@ -216,7 +215,7 @@ flights %>%
 
 > What time of day should you fly if you want to avoid delays as much as possible?
 
-Let\'s group by the hour of the flight. The earlier the flight is scheduled, the lower its expected delay. This is intuitive as delays will affect later flights. Morning flights have fewer (if any) previous flights that can delay them.
+Let's group by the hour of the flight. The earlier the flight is scheduled, the lower its expected delay. This is intuitive as delays will affect later flights. Morning flights have fewer (if any) previous flights that can delay them.
 
 ```{r}
 flights %>%
@@ -244,7 +243,7 @@ flights %>%
   arrange(dest, desc(arr_delay_prop))
 ```
 
-There is some ambiguity in the meaning of the term *flights* in the question. The first example defined a flight as a row in the `flights` table, which is a trip by an aircraft from an airport at a particular date and time. However, *flight* could also refer to the [flight number](https://en.wikipedia.org/wiki/Flight_number), which is the code a carrier uses for an airline service of a route. For example, `AA1` is the flight number of the 09:00 American Airlines flight between JFK and LAX. The flight number is contained in the `flights$flight` column, though what is called a \"flight\" is a combination of the `flights$carrier` and `flights$flight` columns.
+There is some ambiguity in the meaning of the term *flights* in the question. The first example defined a flight as a row in the `flights` table, which is a trip by an aircraft from an airport at a particular date and time. However, *flight* could also refer to the [flight number](https://en.wikipedia.org/wiki/Flight_number), which is the code a carrier uses for an airline service of a route. For example, `AA1` is the flight number of the 09:00 American Airlines flight between JFK and LAX. The flight number is contained in the `flights$flight` column, though what is called a "flight" is a combination of the `flights$carrier` and `flights$flight` columns.
 
 ```{r message=FALSE, warning=FALSE}
 flights %>%
@@ -387,7 +386,7 @@ All of these answers have relied only on using a distribution of comparable obse
 
 Knowing the substance of the data analysis at hand is one of the most important tools of a data scientist. The tools of statistics are a complement, not a substitute, for that knowledge.
 
-With that in mind, Let\'s plot the distribution of the ground speed of flights. The modal flight in this data has a ground speed of between 400 and 500 mph. The distribution of ground speeds has a large left tail of slower flights below 400 mph constituting the majority. There are very few flights with a ground speed over 500 mph.
+With that in mind, Let's plot the distribution of the ground speed of flights. The modal flight in this data has a ground speed of between 400 and 500 mph. The distribution of ground speeds has a large left tail of slower flights below 400 mph constituting the majority. There are very few flights with a ground speed over 500 mph.
 
 ```{r}
 flights %>%
@@ -406,7 +405,7 @@ flights %>%
   head(5)
 ```
 
-One explanation for unusually fast flights is that they are \"making up time\" in the air by flying faster. Commercial aircraft do not fly at their top speed since the airlines are also concerned about fuel consumption. But, if a flight is delayed on the ground, it may fly faster than usual in order to avoid a late arrival. So, I would expect that some of the unusually fast flights were delayed on departure.
+One explanation for unusually fast flights is that they are "making up time" in the air by flying faster. Commercial aircraft do not fly at their top speed since the airlines are also concerned about fuel consumption. But, if a flight is delayed on the ground, it may fly faster than usual in order to avoid a late arrival. So, I would expect that some of the unusually fast flights were delayed on departure.
 
 ```{r}
 flights %>%
@@ -487,7 +486,7 @@ The carrier `"EV"` flies to the most destinations, considering only airports flo
 filter(airlines, carrier == "EV")
 ```
 
-Unless you know the airplane industry, it is likely that you don\'t recognize [ExpressJet](https://en.wikipedia.org/wiki/ExpressJet); I certainly didn\'t. It is a regional airline that partners with major airlines to fly from hubs (larger airports) to smaller airports. This means that many of the shorter flights of major carriers are operated by ExpressJet. This business model explains why ExpressJet services the most destinations.
+Unless you know the airplane industry, it is likely that you don't recognize [ExpressJet](https://en.wikipedia.org/wiki/ExpressJet); I certainly didn't. It is a regional airline that partners with major airlines to fly from hubs (larger airports) to smaller airports. This means that many of the shorter flights of major carriers are operated by ExpressJet. This business model explains why ExpressJet services the most destinations.
 
 Among the airlines that fly to only one destination from New York are Alaska Airlines and Hawaiian Airlines.
 

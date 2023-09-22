@@ -1,0 +1,71 @@
+---
+title: "Variation"
+author: "Pritpal Singh"
+date: "2023-9-19"
+note: "open this file in RStudio"
+---
+
+There are no routine statistical questions, only questionable statistical routines
+
+-- *Sir David Cox*
+
+Far better an approximate answer to the right question, which is often vague, than an exact answer to the wrong question, which can always be made precise.
+
+-- *John Tukey*
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+*Variation* is the tendency of the values of a variable to change from measurement to measurement. Every variable has its own pattern of variation, which can reveal interesting information. The best way to understand that pattern is to visualize the distribution of variable's values.
+
+### Visualizing Distribution
+
+How we visualize the distribution of a variable will depend on whether the vairbale is categorical or continuous. A variable is categorical if it can only take one of a small set of values. In R, categorical variables are usually saved as factor or character vectors. To examine the distribution of a categorical variable, use a bar chart.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut))
+```
+
+The height of the bar displays how many observations occurred with each `x` value. We can compute these values manually with `dplyr :: count()`
+
+```{r}
+diamonds %>%
+  count(cut)
+```
+
+A variable is *continuous* if it can take any of an infinite set of ordered values. Numbers and date-time are two examples of continuous variables. To examine the distribution of a continuous variable, use a histogram.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_histogram(mapping = aes(x = carat), binwidth = 0.5)
+```
+
+We can compute this by hand by combining `dplyr :: count()` and `ggplot2 :: cut_width()`
+
+```{r}
+diamonds %>%
+  count(cut_width(carat, 0.5))
+```
+
+A histogram divides the x-axis into equally spaced bins and then uses the height of each bar to display the number of observations that fall in each bin. In preceding graph, the tallest bar shows that almost 30,000 observations have a `carat` value between 0.25 and 0.75, which are the left and right of edges of the bar.
+
+We can set the width of the intervals in a histogram with the `bin width` argument, which is measured in the units of the `x` variable. We should always explore a variety of binwidths then working with histograms, as different binwidths can reveal different patterns. For example, here is how the preceding graph looks when we zoom into just the diamonds with a size of less than three carats and choose a smaller binwidth.
+
+```{r}
+smaller <- diamonds %>%
+  filter(carat < 3)
+
+ggplot(data = smaller, mapping = aes(x = carat)) + 
+  geom_histogram(binwidth = 0.1)
+```
+
+If we wish to overlay multiple histograms in the same plot, I recommend using `geom_freqploy()` instead if `geom_histogram()`. `geom_freqpoly()` performs the same calculation as `geom_histogram()`, but instead of displaying the counts with bars, uses lines instead. It's much easier to understand overlapping lines than bar.
+
+```{r}
+ggplot(data = smaller, mapping = aes(x = carat, color = cut)) +
+  geom_freqpoly(binwidth = 0.1)
+```
+
+### 
